@@ -38,6 +38,10 @@ namespace TestDesigner
         private void UpdateAnswersListBox()
         {
             _currentQuestion.ResetBindings();
+            string correctAnswerBody = _currentQuestion.GetBodyOfCorrectAnswer();
+            if (correctAnswerBody != "")
+                label_CorrectAnswer.Text = "Correct Answer: " + _currentQuestion.GetBodyOfCorrectAnswer();
+            else label_CorrectAnswer.Text = "Correct Answer: ";
             listBox_Answers.DataSource = _currentQuestion.Answers;
             listBox_Answers.ValueMember = "Body";
             UpdateAnswersCounter();
@@ -86,7 +90,7 @@ namespace TestDesigner
 
         private void button_AddAnswer_Click(object sender, EventArgs e)
         {
-            Answer answer = new Answer(textBox_Answer.Text, checkBox_CorrectAnswer.Checked);
+            Answer answer = new Answer(textBox_Answer.Text);
             _currentQuestion.AddAnswer(answer);
             listBox_Answers.SelectedItem = answer;
             textBox_Answer.Clear();
@@ -125,12 +129,19 @@ namespace TestDesigner
         {
             _test.Title = textBox_Title.Text;
             _test.Author = textBox_Author.Text;
-            _test.TimeToComplete = timePicker.Value.TimeOfDay;
+            _test.TimeToComplete = timePicker.Value.TimeOfDay.ToString();
+            Serializer.Serialize(_test);
         }
 
         private void button_ExportFromXml_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button_MarkAsCorrect_Click(object sender, EventArgs e)
+        {
+            _currentQuestion.SetCorrectAnswer(_currentAnswer);
+            label_CorrectAnswer.Text = $"Correct Answer: {_currentAnswer.Body}";
         }
     }
 }

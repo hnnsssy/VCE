@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace TestDesigner
 {
@@ -12,13 +13,13 @@ namespace TestDesigner
     {
         public string Title { get; set; }
         public string Author { get; set; }
-        public TimeSpan TimeToComplete { get; set; }
+        public string TimeToComplete { get; set; }
         public BindingList<Question> Questions { get { return questions; } }
 
         private BindingList<Question> questions;
 
         public Test() { questions = new BindingList<Question>(); }
-        public Test(string title, string author, TimeSpan timeToComplete)
+        public Test(string title, string author, string timeToComplete)
         {
             questions = new BindingList<Question>();
             Title = title;

@@ -45,7 +45,6 @@
             this.button_AddQuestion = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button_EditAnswer = new System.Windows.Forms.Button();
-            this.checkBox_CorrectAnswer = new System.Windows.Forms.CheckBox();
             this.label_AnswerCount = new System.Windows.Forms.Label();
             this.button_SaveAnswer = new System.Windows.Forms.Button();
             this.button_RemoveAnswer = new System.Windows.Forms.Button();
@@ -53,6 +52,8 @@
             this.textBox_Answer = new System.Windows.Forms.TextBox();
             this.button_ImportToXml = new System.Windows.Forms.Button();
             this.button_ExportFromXml = new System.Windows.Forms.Button();
+            this.button_MarkAsCorrect = new System.Windows.Forms.Button();
+            this.label_CorrectAnswer = new System.Windows.Forms.Label();
             this.groupBox_QuestionEdit.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -98,7 +99,7 @@
             this.listBox_Answers.FormattingEnabled = true;
             this.listBox_Answers.Location = new System.Drawing.Point(6, 19);
             this.listBox_Answers.Name = "listBox_Answers";
-            this.listBox_Answers.Size = new System.Drawing.Size(418, 69);
+            this.listBox_Answers.Size = new System.Drawing.Size(312, 69);
             this.listBox_Answers.TabIndex = 4;
             this.listBox_Answers.SelectedIndexChanged += new System.EventHandler(this.listBox_Answers_SelectedIndexChanged);
             // 
@@ -203,8 +204,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label_CorrectAnswer);
+            this.groupBox1.Controls.Add(this.button_MarkAsCorrect);
             this.groupBox1.Controls.Add(this.button_EditAnswer);
-            this.groupBox1.Controls.Add(this.checkBox_CorrectAnswer);
             this.groupBox1.Controls.Add(this.label_AnswerCount);
             this.groupBox1.Controls.Add(this.button_SaveAnswer);
             this.groupBox1.Controls.Add(this.button_RemoveAnswer);
@@ -213,7 +215,7 @@
             this.groupBox1.Controls.Add(this.listBox_Answers);
             this.groupBox1.Location = new System.Drawing.Point(12, 266);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(431, 171);
+            this.groupBox1.Size = new System.Drawing.Size(431, 186);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Answer Editor";
@@ -227,16 +229,6 @@
             this.button_EditAnswer.Text = "Edit Answer";
             this.button_EditAnswer.UseVisualStyleBackColor = true;
             this.button_EditAnswer.Click += new System.EventHandler(this.button_EditAnswer_Click);
-            // 
-            // checkBox_CorrectAnswer
-            // 
-            this.checkBox_CorrectAnswer.AutoSize = true;
-            this.checkBox_CorrectAnswer.Location = new System.Drawing.Point(353, 96);
-            this.checkBox_CorrectAnswer.Name = "checkBox_CorrectAnswer";
-            this.checkBox_CorrectAnswer.Size = new System.Drawing.Size(71, 17);
-            this.checkBox_CorrectAnswer.TabIndex = 13;
-            this.checkBox_CorrectAnswer.Text = "Is Correct";
-            this.checkBox_CorrectAnswer.UseVisualStyleBackColor = true;
             // 
             // label_AnswerCount
             // 
@@ -283,12 +275,12 @@
             // 
             this.textBox_Answer.Location = new System.Drawing.Point(6, 94);
             this.textBox_Answer.Name = "textBox_Answer";
-            this.textBox_Answer.Size = new System.Drawing.Size(341, 20);
+            this.textBox_Answer.Size = new System.Drawing.Size(418, 20);
             this.textBox_Answer.TabIndex = 8;
             // 
             // button_ImportToXml
             // 
-            this.button_ImportToXml.Location = new System.Drawing.Point(12, 443);
+            this.button_ImportToXml.Location = new System.Drawing.Point(12, 458);
             this.button_ImportToXml.Name = "button_ImportToXml";
             this.button_ImportToXml.Size = new System.Drawing.Size(212, 23);
             this.button_ImportToXml.TabIndex = 13;
@@ -298,7 +290,7 @@
             // 
             // button_ExportFromXml
             // 
-            this.button_ExportFromXml.Location = new System.Drawing.Point(230, 443);
+            this.button_ExportFromXml.Location = new System.Drawing.Point(230, 458);
             this.button_ExportFromXml.Name = "button_ExportFromXml";
             this.button_ExportFromXml.Size = new System.Drawing.Size(213, 23);
             this.button_ExportFromXml.TabIndex = 14;
@@ -306,11 +298,31 @@
             this.button_ExportFromXml.UseVisualStyleBackColor = true;
             this.button_ExportFromXml.Click += new System.EventHandler(this.button_ExportFromXml_Click);
             // 
+            // button_MarkAsCorrect
+            // 
+            this.button_MarkAsCorrect.Location = new System.Drawing.Point(325, 19);
+            this.button_MarkAsCorrect.Name = "button_MarkAsCorrect";
+            this.button_MarkAsCorrect.Size = new System.Drawing.Size(99, 69);
+            this.button_MarkAsCorrect.TabIndex = 16;
+            this.button_MarkAsCorrect.Text = "Mark As Correct";
+            this.button_MarkAsCorrect.UseVisualStyleBackColor = true;
+            this.button_MarkAsCorrect.Click += new System.EventHandler(this.button_MarkAsCorrect_Click);
+            // 
+            // label_CorrectAnswer
+            // 
+            this.label_CorrectAnswer.AutoSize = true;
+            this.label_CorrectAnswer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_CorrectAnswer.Location = new System.Drawing.Point(6, 163);
+            this.label_CorrectAnswer.Name = "label_CorrectAnswer";
+            this.label_CorrectAnswer.Size = new System.Drawing.Size(111, 15);
+            this.label_CorrectAnswer.TabIndex = 17;
+            this.label_CorrectAnswer.Text = "Correct Answer: ";
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 475);
+            this.ClientSize = new System.Drawing.Size(456, 493);
             this.Controls.Add(this.button_ExportFromXml);
             this.Controls.Add(this.button_ImportToXml);
             this.Controls.Add(this.groupBox1);
@@ -351,7 +363,6 @@
         private System.Windows.Forms.Button button_AddAnswer;
         private System.Windows.Forms.TextBox textBox_Answer;
         private System.Windows.Forms.Label label_QuestionCount;
-        private System.Windows.Forms.CheckBox checkBox_CorrectAnswer;
         private System.Windows.Forms.Label label_AnswerCount;
         private System.Windows.Forms.Button button_SaveQuestion;
         private System.Windows.Forms.Button button_SaveAnswer;
@@ -359,6 +370,8 @@
         private System.Windows.Forms.Button button_ExportFromXml;
         private System.Windows.Forms.Button button_EditQuestion;
         private System.Windows.Forms.Button button_EditAnswer;
+        private System.Windows.Forms.Button button_MarkAsCorrect;
+        private System.Windows.Forms.Label label_CorrectAnswer;
     }
 }
 

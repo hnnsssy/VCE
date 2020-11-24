@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace TestDesigner
 {
@@ -22,9 +23,9 @@ namespace TestDesigner
             Body = body;
         }
 
-        public void AddAnswer(string body, bool isCorrect)
+        public void AddAnswer(string body)
         {
-            answers.Add(new Answer(body, isCorrect));
+            answers.Add(new Answer(body));
         }
 
         public void AddAnswer(Answer answer)
@@ -40,6 +41,21 @@ namespace TestDesigner
         public void ResetBindings()
         {
             answers.ResetBindings();
+        }
+
+        public void SetCorrectAnswer(Answer correctAnwser)
+        {
+            foreach (Answer item in answers)
+            {
+                if (item == correctAnwser)
+                    correctAnwser.IsCorrectAnswer = true;
+                else item.IsCorrectAnswer = false;
+            }
+        }
+
+        public string GetBodyOfCorrectAnswer()
+        {
+            return answers.Where(x => x.IsCorrectAnswer == true).Select(x => x.Body).FirstOrDefault();
         }
     }
 }
