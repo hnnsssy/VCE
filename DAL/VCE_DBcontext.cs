@@ -23,7 +23,7 @@ namespace DAL
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Test> Tests { get; set; }
-        public DbSet<AnswerTest> AnswerTests { get; set; }
+        public DbSet<GroupTest> AnswerTests { get; set; }
         public DbSet<Group> Groups { get; set; }
     }
 }

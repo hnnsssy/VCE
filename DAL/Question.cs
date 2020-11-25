@@ -10,7 +10,6 @@ namespace DAL
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string IdTest { get; set; }
         public Test Test { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
         public override string ToString()

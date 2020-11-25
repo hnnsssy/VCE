@@ -11,7 +11,6 @@ namespace DAL
         public int Id { get; set; }
         public string Body { get; set; }
         public bool IsCorrect { get; set; }
-        public int IdQuestion { get; set; }
         public Question Question { get; set; }
         public override string ToString()
         {

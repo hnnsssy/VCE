@@ -8,9 +8,8 @@ namespace DAL
 {
     public class UserGroup
     {
-        public int IdUser { get; set; }
+        public int Id { get; set; }
         public User User { get; set; }
-        public int IdGroup { get; set; }
         public Group Group { get; set; }
     }
 }
