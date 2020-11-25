@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace TestDesigner
+namespace DesignerClassLib
 {
-    class Serializer
+    public class Serializer
     {
         public static T Deserialize<T>() where T : class
         {

@@ -44,6 +44,8 @@
             this.button_RemoveQuestion = new System.Windows.Forms.Button();
             this.button_AddQuestion = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label_CorrectAnswer = new System.Windows.Forms.Label();
+            this.button_MarkAsCorrect = new System.Windows.Forms.Button();
             this.button_EditAnswer = new System.Windows.Forms.Button();
             this.label_AnswerCount = new System.Windows.Forms.Label();
             this.button_SaveAnswer = new System.Windows.Forms.Button();
@@ -51,9 +53,6 @@
             this.button_AddAnswer = new System.Windows.Forms.Button();
             this.textBox_Answer = new System.Windows.Forms.TextBox();
             this.button_ImportToXml = new System.Windows.Forms.Button();
-            this.button_ExportFromXml = new System.Windows.Forms.Button();
-            this.button_MarkAsCorrect = new System.Windows.Forms.Button();
-            this.label_CorrectAnswer = new System.Windows.Forms.Label();
             this.groupBox_QuestionEdit.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -220,6 +219,26 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Answer Editor";
             // 
+            // label_CorrectAnswer
+            // 
+            this.label_CorrectAnswer.AutoSize = true;
+            this.label_CorrectAnswer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_CorrectAnswer.Location = new System.Drawing.Point(6, 163);
+            this.label_CorrectAnswer.Name = "label_CorrectAnswer";
+            this.label_CorrectAnswer.Size = new System.Drawing.Size(111, 15);
+            this.label_CorrectAnswer.TabIndex = 17;
+            this.label_CorrectAnswer.Text = "Correct Answer: ";
+            // 
+            // button_MarkAsCorrect
+            // 
+            this.button_MarkAsCorrect.Location = new System.Drawing.Point(325, 19);
+            this.button_MarkAsCorrect.Name = "button_MarkAsCorrect";
+            this.button_MarkAsCorrect.Size = new System.Drawing.Size(99, 69);
+            this.button_MarkAsCorrect.TabIndex = 16;
+            this.button_MarkAsCorrect.Text = "Mark As Correct";
+            this.button_MarkAsCorrect.UseVisualStyleBackColor = true;
+            this.button_MarkAsCorrect.Click += new System.EventHandler(this.button_MarkAsCorrect_Click);
+            // 
             // button_EditAnswer
             // 
             this.button_EditAnswer.Location = new System.Drawing.Point(218, 120);
@@ -282,48 +301,17 @@
             // 
             this.button_ImportToXml.Location = new System.Drawing.Point(12, 458);
             this.button_ImportToXml.Name = "button_ImportToXml";
-            this.button_ImportToXml.Size = new System.Drawing.Size(212, 23);
+            this.button_ImportToXml.Size = new System.Drawing.Size(431, 23);
             this.button_ImportToXml.TabIndex = 13;
             this.button_ImportToXml.Text = "Import to XML";
             this.button_ImportToXml.UseVisualStyleBackColor = true;
             this.button_ImportToXml.Click += new System.EventHandler(this.button_ImportToXml_Click);
-            // 
-            // button_ExportFromXml
-            // 
-            this.button_ExportFromXml.Location = new System.Drawing.Point(230, 458);
-            this.button_ExportFromXml.Name = "button_ExportFromXml";
-            this.button_ExportFromXml.Size = new System.Drawing.Size(213, 23);
-            this.button_ExportFromXml.TabIndex = 14;
-            this.button_ExportFromXml.Text = "Export from XML";
-            this.button_ExportFromXml.UseVisualStyleBackColor = true;
-            this.button_ExportFromXml.Click += new System.EventHandler(this.button_ExportFromXml_Click);
-            // 
-            // button_MarkAsCorrect
-            // 
-            this.button_MarkAsCorrect.Location = new System.Drawing.Point(325, 19);
-            this.button_MarkAsCorrect.Name = "button_MarkAsCorrect";
-            this.button_MarkAsCorrect.Size = new System.Drawing.Size(99, 69);
-            this.button_MarkAsCorrect.TabIndex = 16;
-            this.button_MarkAsCorrect.Text = "Mark As Correct";
-            this.button_MarkAsCorrect.UseVisualStyleBackColor = true;
-            this.button_MarkAsCorrect.Click += new System.EventHandler(this.button_MarkAsCorrect_Click);
-            // 
-            // label_CorrectAnswer
-            // 
-            this.label_CorrectAnswer.AutoSize = true;
-            this.label_CorrectAnswer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label_CorrectAnswer.Location = new System.Drawing.Point(6, 163);
-            this.label_CorrectAnswer.Name = "label_CorrectAnswer";
-            this.label_CorrectAnswer.Size = new System.Drawing.Size(111, 15);
-            this.label_CorrectAnswer.TabIndex = 17;
-            this.label_CorrectAnswer.Text = "Correct Answer: ";
             // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 493);
-            this.Controls.Add(this.button_ExportFromXml);
             this.Controls.Add(this.button_ImportToXml);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox_QuestionEdit);
@@ -367,7 +355,6 @@
         private System.Windows.Forms.Button button_SaveQuestion;
         private System.Windows.Forms.Button button_SaveAnswer;
         private System.Windows.Forms.Button button_ImportToXml;
-        private System.Windows.Forms.Button button_ExportFromXml;
         private System.Windows.Forms.Button button_EditQuestion;
         private System.Windows.Forms.Button button_EditAnswer;
         private System.Windows.Forms.Button button_MarkAsCorrect;
