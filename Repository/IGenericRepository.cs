@@ -13,6 +13,7 @@ namespace Repository
         TEntity FindById(object id);
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate);
+        IEnumerable<TEntity> ExecWithStoreProcedure(string query, params object[] parameters);
         void Remove(TEntity item);
         void Update(TEntity item);
     }

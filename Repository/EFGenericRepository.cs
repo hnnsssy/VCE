@@ -53,7 +53,10 @@ namespace Repository
             return query.Where(predicate).ToList();
         }
 
-
+        public IEnumerable<TEntity> ExecWithStoreProcedure(string query, params object[] parameters)
+        {
+            return _context.Database.SqlQuery<TEntity>(query, parameters);
+        }
 
         private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
         {

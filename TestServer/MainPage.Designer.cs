@@ -36,6 +36,10 @@
             this.textBox_Delete = new System.Windows.Forms.TextBox();
             this.button_Delete = new System.Windows.Forms.Button();
             this.button_Create = new System.Windows.Forms.Button();
+            this.button_StartServer = new System.Windows.Forms.Button();
+            this.button_StopServer = new System.Windows.Forms.Button();
+            this.textBox_Port = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Table)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,11 +121,52 @@
             this.button_Create.UseVisualStyleBackColor = true;
             this.button_Create.Click += new System.EventHandler(this.button_Create_Click);
             // 
+            // button_StartServer
+            // 
+            this.button_StartServer.Location = new System.Drawing.Point(12, 177);
+            this.button_StartServer.Name = "button_StartServer";
+            this.button_StartServer.Size = new System.Drawing.Size(116, 23);
+            this.button_StartServer.TabIndex = 12;
+            this.button_StartServer.Text = "Start Server";
+            this.button_StartServer.UseVisualStyleBackColor = true;
+            this.button_StartServer.Click += new System.EventHandler(this.button_StartServer_Click);
+            // 
+            // button_StopServer
+            // 
+            this.button_StopServer.Enabled = false;
+            this.button_StopServer.Location = new System.Drawing.Point(133, 177);
+            this.button_StopServer.Name = "button_StopServer";
+            this.button_StopServer.Size = new System.Drawing.Size(116, 23);
+            this.button_StopServer.TabIndex = 13;
+            this.button_StopServer.Text = "Stop Server";
+            this.button_StopServer.UseVisualStyleBackColor = true;
+            // 
+            // textBox_Port
+            // 
+            this.textBox_Port.Location = new System.Drawing.Point(44, 206);
+            this.textBox_Port.Name = "textBox_Port";
+            this.textBox_Port.Size = new System.Drawing.Size(84, 20);
+            this.textBox_Port.TabIndex = 14;
+            this.textBox_Port.Text = "33000";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 209);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(26, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Port";
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 178);
+            this.ClientSize = new System.Drawing.Size(389, 234);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBox_Port);
+            this.Controls.Add(this.button_StopServer);
+            this.Controls.Add(this.button_StartServer);
             this.Controls.Add(this.comboBox_Other);
             this.Controls.Add(this.comboBox_Group);
             this.Controls.Add(this.button_Update);
@@ -148,6 +193,10 @@
         private System.Windows.Forms.TextBox textBox_Delete;
         private System.Windows.Forms.Button button_Delete;
         private System.Windows.Forms.Button button_Create;
+        private System.Windows.Forms.Button button_StartServer;
+        private System.Windows.Forms.Button button_StopServer;
+        private System.Windows.Forms.TextBox textBox_Port;
+        private System.Windows.Forms.Label label1;
     }
 }
 

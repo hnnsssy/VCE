@@ -10,11 +10,11 @@ namespace DesignerClassLib
 {
     public class Serializer
     {
-        public static T Deserialize<T>() where T : class
+        public static T Deserialize<T>(string path) where T : class
         {
             XmlSerializer ser = new XmlSerializer(typeof(T));
 
-            using (Stream stream = File.Open("test.xml", FileMode.Open))
+            using (Stream stream = File.Open(path, FileMode.Open))
             {
                 return (T)ser.Deserialize(stream);
             }
