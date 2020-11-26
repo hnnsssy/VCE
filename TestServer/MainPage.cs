@@ -240,7 +240,7 @@ namespace TestServer
         {
             listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPHostEntry iPHost = Dns.GetHostEntry("localhost");
-            IPAddress iPAddress = iPHost.AddressList[1]; //ipconfig (карти)
+            IPAddress iPAddress = iPHost.AddressList[0]; //ipconfig (карти)
             int port = int.Parse(textBox_Port.Text);
             IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
             listenSocket.Bind(iPEndPoint);
@@ -294,18 +294,20 @@ namespace TestServer
                         clientInfo.ClientSocket.Send(sendByte);
                     }
                 }
+
+
             }
         }
 
         private bool AuthorizationSucceeded(string login, string password)
         {
-            if (RUser.FindAll(x => x.Login == login && x.Password == password) != null) return true;
+            if (RUser.FindAll(x => x.Login == login && x.Password == password).FirstOrDefault() != null) 
+                return true;
             return false;
         }
 
         private List<TestWrap> GetTestInWrap(string userLogin)
         {
-            //List<Test> gr = RGroupTests.FindAll(x => x.Group == RUserGroups.FindAll(y => y.User.Login == userLogin).Fire.Select(z => z.Group)).Select(x=>x.Test).ToList();
             var param = new SqlParameter("param", SqlDbType.Int) { Value = RUser.FindAll(x => x.Login == userLogin).FirstOrDefault().Id };
             List<GroupTest> gr = RGroupTests.ExecWithStoreProcedure("select * from GroupTests where Group_Id = (select Group_Id from UserGroups where User_Id = @param)", param).ToList();
 

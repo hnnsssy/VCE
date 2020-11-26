@@ -31,6 +31,11 @@ namespace TestWrappersLib
     public class AnswerWrap
     {
         public string Answer { get; set; }
+        public bool isChecked { get; set; }
         public AnswerWrap() { }
+        public override string ToString()
+        {
+            return Answer;
+        }
     }
 }
