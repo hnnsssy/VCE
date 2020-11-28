@@ -93,7 +93,7 @@ namespace TestClient
             {
                 sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPHostEntry iPHost = Dns.GetHostEntry("localhost");
-                IPAddress iPAddress = iPHost.AddressList[0];
+                IPAddress iPAddress = iPHost.AddressList[1];
                 IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, 33000);
 
                 sendSocket.Connect(iPEndPoint);
@@ -101,16 +101,16 @@ namespace TestClient
                 Thread thread = new Thread(ReceiveServerMsg);
                 thread.IsBackground = true;
                 thread.Start(sendSocket);
+
+                string msg = $"#login|pass_{textBox_Login.Text}|{textBox_Pass.Text}";
+                Byte[] sendByte = new Byte[1024];
+                sendByte = Encoding.ASCII.GetBytes(msg);
+                sendSocket.Send(sendByte);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Informer", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            string msg = $"#login|pass_{textBox_Login.Text}|{textBox_Pass.Text}";
-            Byte[] sendByte = new Byte[1024];
-            sendByte = Encoding.ASCII.GetBytes(msg);
-            sendSocket.Send(sendByte);
         }
 
         private void checkedListBox_Answers_ItemCheck(object sender, ItemCheckEventArgs e)

@@ -240,7 +240,7 @@ namespace TestServer
         {
             listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPHostEntry iPHost = Dns.GetHostEntry("localhost");
-            IPAddress iPAddress = iPHost.AddressList[0]; //ipconfig (карти)
+            IPAddress iPAddress = iPHost.AddressList[1]; //ipconfig (карти)
             int port = int.Parse(textBox_Port.Text);
             IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, port);
             listenSocket.Bind(iPEndPoint);
@@ -270,7 +270,9 @@ namespace TestServer
                 if (receiveSocket == null)
                     throw new ArgumentException("Receive Socket Exception");
                 Byte[] receiveByte = new Byte[1024];
-                Int32 nCount = receiveSocket.Receive(receiveByte); //блокуюча функція
+                Int32 nCount = 0;
+                try { nCount = receiveSocket.Receive(receiveByte); }//блокуюча функція
+                catch { }
                 String receiveString = Encoding.ASCII.GetString(receiveByte, 0, nCount);
 
                 if(receiveString.Contains("#login|pass_"))
@@ -294,8 +296,6 @@ namespace TestServer
                         clientInfo.ClientSocket.Send(sendByte);
                     }
                 }
-
-
             }
         }
 
