@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listBox_Tests = new System.Windows.Forms.ListBox();
             this.button_StartTest = new System.Windows.Forms.Button();
             this.groupBox_Test = new System.Windows.Forms.GroupBox();
+            this.label_Counter = new System.Windows.Forms.Label();
             this.checkedListBox_Answers = new System.Windows.Forms.CheckedListBox();
             this.label_Question = new System.Windows.Forms.Label();
             this.button_NextQuestion = new System.Windows.Forms.Button();
@@ -39,7 +41,7 @@
             this.button_Login = new System.Windows.Forms.Button();
             this.button_PreviousQuestion = new System.Windows.Forms.Button();
             this.button_EndTest = new System.Windows.Forms.Button();
-            this.label_Counter = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.groupBox_Test.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,6 +75,14 @@
             this.groupBox_Test.TabStop = false;
             this.groupBox_Test.Text = "Test";
             // 
+            // label_Counter
+            // 
+            this.label_Counter.AutoSize = true;
+            this.label_Counter.Location = new System.Drawing.Point(5, 114);
+            this.label_Counter.Name = "label_Counter";
+            this.label_Counter.Size = new System.Drawing.Size(0, 13);
+            this.label_Counter.TabIndex = 2;
+            // 
             // checkedListBox_Answers
             // 
             this.checkedListBox_Answers.BackColor = System.Drawing.SystemColors.Control;
@@ -81,7 +91,7 @@
             this.checkedListBox_Answers.FormattingEnabled = true;
             this.checkedListBox_Answers.Location = new System.Drawing.Point(7, 38);
             this.checkedListBox_Answers.Name = "checkedListBox_Answers";
-            this.checkedListBox_Answers.Size = new System.Drawing.Size(207, 90);
+            this.checkedListBox_Answers.Size = new System.Drawing.Size(426, 90);
             this.checkedListBox_Answers.TabIndex = 1;
             this.checkedListBox_Answers.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox_Answers_ItemCheck);
             // 
@@ -106,21 +116,21 @@
             // 
             // textBox_Login
             // 
-            this.textBox_Login.Location = new System.Drawing.Point(12, 154);
+            this.textBox_Login.Location = new System.Drawing.Point(12, 228);
             this.textBox_Login.Name = "textBox_Login";
             this.textBox_Login.Size = new System.Drawing.Size(118, 20);
             this.textBox_Login.TabIndex = 3;
             // 
             // textBox_Pass
             // 
-            this.textBox_Pass.Location = new System.Drawing.Point(12, 178);
+            this.textBox_Pass.Location = new System.Drawing.Point(12, 252);
             this.textBox_Pass.Name = "textBox_Pass";
             this.textBox_Pass.Size = new System.Drawing.Size(118, 20);
             this.textBox_Pass.TabIndex = 4;
             // 
             // button_Login
             // 
-            this.button_Login.Location = new System.Drawing.Point(12, 204);
+            this.button_Login.Location = new System.Drawing.Point(12, 278);
             this.button_Login.Name = "button_Login";
             this.button_Login.Size = new System.Drawing.Size(119, 23);
             this.button_Login.TabIndex = 5;
@@ -150,19 +160,16 @@
             this.button_EndTest.UseVisualStyleBackColor = true;
             this.button_EndTest.Click += new System.EventHandler(this.button_EndTest_Click);
             // 
-            // label_Counter
+            // timer
             // 
-            this.label_Counter.AutoSize = true;
-            this.label_Counter.Location = new System.Drawing.Point(5, 114);
-            this.label_Counter.Name = "label_Counter";
-            this.label_Counter.Size = new System.Drawing.Size(0, 13);
-            this.label_Counter.TabIndex = 2;
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(607, 244);
+            this.ClientSize = new System.Drawing.Size(607, 313);
             this.Controls.Add(this.button_EndTest);
             this.Controls.Add(this.button_PreviousQuestion);
             this.Controls.Add(this.button_Login);
@@ -195,6 +202,7 @@
         private System.Windows.Forms.Button button_PreviousQuestion;
         private System.Windows.Forms.Button button_EndTest;
         private System.Windows.Forms.Label label_Counter;
+        private System.Windows.Forms.Timer timer;
     }
 }
 

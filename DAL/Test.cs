@@ -9,6 +9,7 @@ namespace DAL
     public class Test
     {
         public int Id { get; set; }
+        public string TimeToComplete { get; set; }
         public string Title { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
         public override string ToString()

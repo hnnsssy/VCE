@@ -21,6 +21,8 @@ namespace TestClient
         Socket sendSocket = null;
         TestWrap currentTest;
         int currentQuestionIndex;
+
+        //DateTime timeToComplete;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,31 +41,37 @@ namespace TestClient
 
         private void button_StartTest_Click(object sender, EventArgs e)
         {
-            currentTest = (listBox_Tests.SelectedItem as TestWrap);
-            currentQuestionIndex = 0;
-            button_NextQuestion_Click(sender, e);
+            if(listBox_Tests.SelectedIndex != -1)
+            {
+                currentTest = (listBox_Tests.SelectedItem as TestWrap);
+                //label_Time.Text = currentTest.TimeToComplete;
+                //timeToComplete = Convert.ToDateTime(currentTest.TimeToComplete);
+                currentQuestionIndex = -1;
+                //timer.Start();
+                button_NextQuestion_Click(sender, e);
+            }
         }
 
         private void button_NextQuestion_Click(object sender, EventArgs e)
         {
-            if (currentQuestionIndex > checkedListBox_Answers.Items.Count - 1)
+            currentQuestionIndex++;
+            if (currentQuestionIndex > currentTest.Questions.Count - 1)
                 currentQuestionIndex = 0;
             checkedListBox_Answers.Items.Clear();
             label_Question.Text = currentTest.Questions[currentQuestionIndex].Body;
             checkedListBox_Answers.Items.AddRange(currentTest.Questions[currentQuestionIndex].Answers.ToArray());
             UpdateCheckedListBox();
-            currentQuestionIndex++;
         }
 
         private void button_PreviousQuestion_Click(object sender, EventArgs e)
         {
+            currentQuestionIndex--;
             if (currentQuestionIndex < 0)
-                currentQuestionIndex = checkedListBox_Answers.Items.Count - 1;
+                currentQuestionIndex = currentTest.Questions.Count - 1;
             checkedListBox_Answers.Items.Clear();
             label_Question.Text = currentTest.Questions[currentQuestionIndex].Body;
             checkedListBox_Answers.Items.AddRange(currentTest.Questions[currentQuestionIndex].Answers.ToArray());
             UpdateCheckedListBox();
-            currentQuestionIndex--;
         }
 
         private void ReceiveServerMsg(object sender)
@@ -75,12 +83,13 @@ namespace TestClient
                 {
                     Byte[] receiveByte = new Byte[60000];
                     Int32 nCount = receiveSocket.Receive(receiveByte); //блокуюча функція
-                    //String receiveString = Encoding.ASCII.GetString(receiveByte, 0, nCount);
+                    String receiveString = Encoding.ASCII.GetString(receiveByte, 0, nCount);
                     MemoryStream stream = new MemoryStream(receiveByte);
                     BinaryFormatter bin = new BinaryFormatter();
                     List<TestWrap> te = bin.Deserialize(stream) as List<TestWrap>;
                     this.Invoke(new Action(() =>
                     {
+                        listBox_Tests.Items.Clear();
                         listBox_Tests.Items.AddRange(te.ToArray());
                     }));
                 }
@@ -89,41 +98,57 @@ namespace TestClient
 
         private void button_Login_Click(object sender, EventArgs e)
         {
-            try
+            if(!string.IsNullOrEmpty(textBox_Login.Text) && !string.IsNullOrEmpty(textBox_Pass.Text))
             {
-                sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPHostEntry iPHost = Dns.GetHostEntry("localhost");
-                IPAddress iPAddress = iPHost.AddressList[1];
-                IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, 33000);
+                try
+                {
+                    sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    IPHostEntry iPHost = Dns.GetHostEntry("localhost");
+                    IPAddress iPAddress = iPHost.AddressList[1];
+                    IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, 33000);
 
-                sendSocket.Connect(iPEndPoint);
+                    sendSocket.Connect(iPEndPoint);
 
-                Thread thread = new Thread(ReceiveServerMsg);
-                thread.IsBackground = true;
-                thread.Start(sendSocket);
+                    Thread thread = new Thread(ReceiveServerMsg);
+                    thread.IsBackground = true;
+                    thread.Start(sendSocket);
 
-                string msg = $"#login|pass_{textBox_Login.Text}|{textBox_Pass.Text}";
-                Byte[] sendByte = new Byte[1024];
-                sendByte = Encoding.ASCII.GetBytes(msg);
-                sendSocket.Send(sendByte);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Informer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string msg = $"#login|pass_{textBox_Login.Text}|{textBox_Pass.Text}";
+                    Byte[] sendByte = new Byte[1024];
+                    sendByte = Encoding.ASCII.GetBytes(msg);
+                    sendSocket.Send(sendByte);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Informer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
         private void checkedListBox_Answers_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             (checkedListBox_Answers.Items[e.Index] as AnswerWrap).isChecked = true;
+            for (int ix = 0; ix < checkedListBox_Answers.Items.Count; ++ix)
+                if (ix != e.Index) checkedListBox_Answers.SetItemChecked(ix, false);
         }
 
         private void button_EndTest_Click(object sender, EventArgs e)
         {
-            string msg = $"#endTest";
-            Byte[] sendByte = new Byte[1024];
-            sendByte = Encoding.ASCII.GetBytes(msg);
+            Byte[] sendByte = null;
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, currentTest);
+                sendByte = ms.ToArray();
+            }
             sendSocket.Send(sendByte);
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            //TimeSpan elapsed = DateTime.Now - timeToComplete;
+
+            //label_Time.Text = elapsed.ToString("HH:mm:ss");
         }
     }
 }

@@ -58,7 +58,7 @@ namespace TestServer
             d_test = DesignerClassLib.Serializer.Deserialize<DesignerClassLib.Test>(path);
 
 
-            Test test = new Test() { Title = d_test.Title };
+            Test test = new Test() { Title = d_test.Title, TimeToComplete = d_test.TimeToComplete };
             List<Question> questions = new List<Question>();
             List<Answer> answers = new List<Answer>();
             foreach (DesignerClassLib.Question d_question in d_test.Questions)
@@ -142,97 +142,104 @@ namespace TestServer
 
         private void button_Create_Click(object sender, EventArgs e)
         {
-            switch (listBox_Tables.SelectedItem.ToString())
-            {
-                case "Group":
-                    CU_Group createGroup = new CU_Group(this, FormType.Create, null);
-                    createGroup.ShowDialog();
-                    if (createGroup.DialogResult == DialogResult.OK)
-                        RefreshTable();
-                    break;
-                case "User":
-                    CU_User createUser = new CU_User(this, FormType.Create, null);
-                    createUser.ShowDialog();
-                    if (createUser.DialogResult == DialogResult.OK)
-                        RefreshTable();
-                    break;
-                case "Test":
-                    OpenFileDialog openFileDialog = new OpenFileDialog();
-                    openFileDialog.Filter = "XML Files|*.xml";
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                        ImportTestToDataBase(openFileDialog.FileName);
-                    break;
-                case "GroupTest":
-                    CU_GroupTest groupTest = new CU_GroupTest(this);
-                    groupTest.ShowDialog();
-                    if (groupTest.DialogResult == DialogResult.OK)
-                        RefreshTable();
-                    break;
-                case "UserGroup":
-                    CU_UserGroup userGroup = new CU_UserGroup(this);
-                    userGroup.ShowDialog();
-                    if (userGroup.DialogResult == DialogResult.OK)
-                        RefreshTable();
-                    break;
-                default:
-                    break;
-            }
+            if (listBox_Tables.SelectedIndex != -1)
+                switch (listBox_Tables.SelectedItem.ToString())
+                {
+                    case "Group":
+                        CU_Group createGroup = new CU_Group(this, FormType.Create, null);
+                        createGroup.ShowDialog();
+                        if (createGroup.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    case "User":
+                        CU_User createUser = new CU_User(this, FormType.Create, null);
+                        createUser.ShowDialog();
+                        if (createUser.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    case "Test":
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "XML Files|*.xml";
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                            ImportTestToDataBase(openFileDialog.FileName);
+                        break;
+                    case "GroupTest":
+                        CU_GroupTest groupTest = new CU_GroupTest(this);
+                        groupTest.ShowDialog();
+                        if (groupTest.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    case "UserGroup":
+                        CU_UserGroup userGroup = new CU_UserGroup(this);
+                        userGroup.ShowDialog();
+                        if (userGroup.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    default:
+
+                        break;
+                }
         }
 
         private void button_Update_Click(object sender, EventArgs e)
         {
-            switch (listBox_Tables.SelectedItem.ToString())
-            {
-                case "Group":
-                    CU_Group createGroup = new CU_Group(this, FormType.Update, textBox_Delete.Text);
-                    createGroup.ShowDialog();
-                    if (createGroup.DialogResult == DialogResult.OK)
-                        RefreshTable();
-                    break;
-                case "User":
-                    CU_User createUser = new CU_User(this, FormType.Update, textBox_Delete.Text);
-                    createUser.ShowDialog();
-                    if (createUser.DialogResult == DialogResult.OK)
-                        RefreshTable();
-                    break;
-                default:
-                    break;
-            }
+            if (listBox_Tables.SelectedIndex != -1)
+                switch (listBox_Tables.SelectedItem.ToString())
+                {
+                    case "Group":
+                        CU_Group createGroup = new CU_Group(this, FormType.Update, textBox_Delete.Text);
+                        createGroup.ShowDialog();
+                        if (createGroup.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    case "User":
+                        CU_User createUser = new CU_User(this, FormType.Update, textBox_Delete.Text);
+                        createUser.ShowDialog();
+                        if (createUser.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    default:
+                        break;
+                }
         }
 
         private void button_Delete_Click(object sender, EventArgs e)
         {
-            switch (listBox_Tables.SelectedItem.ToString())
-            {
-                case "Group":
-                    RGroups.Remove(RGroups.FindAll(x => x.Name == textBox_Delete.Text).FirstOrDefault());
-                    break;
-                case "User":
-                    RUser.Remove(RUser.FindAll(x => x.Login == textBox_Delete.Text).FirstOrDefault());
-                    break;
-                case "UserGroup":
-                    Group group = (comboBox_Group.SelectedItem as Group);
-                    User user = (comboBox_Other.SelectedItem as User);
-                    RUserGroups.Remove(RUserGroups.FindAll(x => x.Group.Id == group.Id && x.User.Id == user.Id).FirstOrDefault());
-                    break;
-                case "GroupTest":
-                    Group gr= (comboBox_Group.SelectedItem as Group);
-                    Test test = (comboBox_Other.SelectedItem as Test);
-                    RGroupTests.Remove(RGroupTests.FindAll(x => x.Group.Id == gr.Id && x.Test.Id == test.Id).FirstOrDefault());
-                    break;
-                default:
-                    break;
-            }
+            if (listBox_Tables.SelectedIndex != -1)
+                switch (listBox_Tables.SelectedItem.ToString())
+                {
+                    case "Group":
+                        RGroups.Remove(RGroups.FindAll(x => x.Name == textBox_Delete.Text).FirstOrDefault());
+                        break;
+                    case "User":
+                        RUser.Remove(RUser.FindAll(x => x.Login == textBox_Delete.Text).FirstOrDefault());
+                        break;
+                    case "UserGroup":
+                        Group group = (comboBox_Group.SelectedItem as Group);
+                        User user = (comboBox_Other.SelectedItem as User);
+                        RUserGroups.Remove(RUserGroups.FindAll(x => x.Group.Id == group.Id && x.User.Id == user.Id).FirstOrDefault());
+                        break;
+                    case "GroupTest":
+                        Group gr = (comboBox_Group.SelectedItem as Group);
+                        Test test = (comboBox_Other.SelectedItem as Test);
+                        RGroupTests.Remove(RGroupTests.FindAll(x => x.Group.Id == gr.Id && x.Test.Id == test.Id).FirstOrDefault());
+                        break;
+                    default:
+                        break;
+                }
 
             RefreshTable();
         }
 
         private void listBox_Tables_SelectedIndexChanged(object sender, EventArgs e)
         {
-            RefreshTable();
-            if (listBox_Tables.SelectedItem.ToString() == "Test")
-                button_Create.Text = "Import";
-            else button_Create.Text = "Create";
+            if(listBox_Tables.SelectedIndex != -1)
+            {
+                RefreshTable();
+                if (listBox_Tables.SelectedItem.ToString() == "Test")
+                    button_Create.Text = "Import";
+                else button_Create.Text = "Create";
+            }
         }
 
         Socket listenSocket;
@@ -269,7 +276,7 @@ namespace TestServer
                 Socket receiveSocket = clientInfo.ClientSocket;
                 if (receiveSocket == null)
                     throw new ArgumentException("Receive Socket Exception");
-                Byte[] receiveByte = new Byte[1024];
+                Byte[] receiveByte = new Byte[60000];
                 Int32 nCount = 0;
                 try { nCount = receiveSocket.Receive(receiveByte); }//блокуюча функція
                 catch { }
@@ -284,6 +291,7 @@ namespace TestServer
                             we = GetTestInWrap(login_pass[0]);
                     });
 
+                    //send test
                     if(we != null)
                     {
                         Byte[] sendByte = null;
@@ -296,7 +304,41 @@ namespace TestServer
                         clientInfo.ClientSocket.Send(sendByte);
                     }
                 }
+                else
+                {
+                    try
+                    {
+                        MemoryStream stream = new MemoryStream(receiveByte);
+                        BinaryFormatter bin = new BinaryFormatter();
+                        TestWrap te = bin.Deserialize(stream) as TestWrap;
+                        this.Invoke(new Action(() =>
+                        {
+                            WriteResultOfTest(te);
+                        }));
+                    }
+                    catch { }
+                }
             }
+        }
+
+        private void WriteResultOfTest(TestWrap test)
+        {
+            UserAnswer userAnswer = new UserAnswer();
+            userAnswer.User = RUser.FindById(test.UserID);
+            userAnswer.Dt = DateTime.Now.ToString("MM.dd.yyyy");
+            foreach (QuestionWrap questionWrap in test.Questions)
+            {
+                foreach (AnswerWrap answerWrap in questionWrap.Answers)
+                {
+                    if (answerWrap.isChecked == true)
+                    {
+                        userAnswer.Answer = RAnswers.GetAll().Where(x => x.Body == answerWrap.Answer).FirstOrDefault();
+                        userAnswer.User = RUser.FindById(test.UserID);
+                        RUserAnswers.Add(userAnswer);
+                    }
+                    else continue;
+                }    
+            }          
         }
 
         private bool AuthorizationSucceeded(string login, string password)
@@ -308,14 +350,14 @@ namespace TestServer
 
         private List<TestWrap> GetTestInWrap(string userLogin)
         {
-            var param = new SqlParameter("param", SqlDbType.Int) { Value = RUser.FindAll(x => x.Login == userLogin).FirstOrDefault().Id };
+            int userId = RUser.FindAll(x => x.Login == userLogin).FirstOrDefault().Id;
+            var param = new SqlParameter("param", SqlDbType.Int) { Value = userId };
             List<GroupTest> gr = RGroupTests.ExecWithStoreProcedure("select * from GroupTests where Group_Id = (select Group_Id from UserGroups where User_Id = @param)", param).ToList();
-
             List<TestWrap> tws = new List<TestWrap>();
             foreach (GroupTest item in gr)
             {
                 GroupTest gt = RGroupTests.FindById(item.Id);
-                TestWrap testWrap = new TestWrap() { Title = gt.Test.Title, Id = gt.Test.Id };
+                TestWrap testWrap = new TestWrap() { Title = gt.Test.Title, Id = gt.Test.Id, TimeToComplete = gt.Test.TimeToComplete, UserID = userId };
                 foreach (Question wQuestion in gt.Test.Questions)
                 {
                     QuestionWrap questionWrap = new QuestionWrap() { Body = wQuestion.Title };

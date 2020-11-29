@@ -10,7 +10,9 @@ namespace TestWrappersLib
     public class TestWrap
     {
         public int Id { get; set; }
+        public string TimeToComplete { get; set; }
         public string Title { get; set; }
+        public int UserID { get; set; }
         public List<QuestionWrap> Questions { get; set; }
         public TestWrap() { Questions = new List<QuestionWrap>(); }
         public override string ToString()
