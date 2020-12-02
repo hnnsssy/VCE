@@ -25,5 +25,6 @@ namespace DAL
         public DbSet<Test> Tests { get; set; }
         public DbSet<GroupTest> AnswerTests { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<TestResult> TestResults { get; set; }
     }
 }

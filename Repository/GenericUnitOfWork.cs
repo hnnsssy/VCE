@@ -10,7 +10,7 @@ namespace Repository
     public class GenericUnitOfWork : IDisposable
     {
         // Initialization code
-        DbContext context;
+        public DbContext context;
 
         public GenericUnitOfWork(DbContext context) { this.context = context; }
 

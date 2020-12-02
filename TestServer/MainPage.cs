@@ -11,17 +11,22 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TestServer.Properties;
 using TestWrappersLib;
 
 namespace TestServer
 {
     public partial class MainPage : Form
     {
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
         public IGenericRepository<User> RUser { get; set; }
         public IGenericRepository<UserAnswer> RUserAnswers { get; set; }
         public IGenericRepository<UserGroup> RUserGroups { get; set; }
@@ -30,6 +35,7 @@ namespace TestServer
         public IGenericRepository<Test> RTests { get; set; }
         public IGenericRepository<GroupTest> RGroupTests { get; set; }
         public IGenericRepository<Group> RGroups { get; set; }
+        public IGenericRepository<TestResult> RTestResult { get; set; }
 
         GenericUnitOfWork work;
 
@@ -50,6 +56,7 @@ namespace TestServer
             RUserGroups = work.Repository<UserGroup>();
             RQuestions = work.Repository<Question>();
             RGroupTests = work.Repository<GroupTest>();
+            RTestResult = work.Repository<TestResult>();
         }
 
         private void ImportTestToDataBase(string path)
@@ -84,6 +91,7 @@ namespace TestServer
         {
             comboBox_Group.Items.Clear();
             comboBox_Other.Items.Clear();
+            this.Size = new Size(this.Size.Width, 250);
             switch (listBox_Tables.SelectedItem.ToString())
             {
                 case "Group":
@@ -117,6 +125,7 @@ namespace TestServer
                     dataGridView_Table.DataSource = RGroupTests.GetAll().ToList();
                     dataGridView_Table.Columns["Id"].Visible = false;
 
+                    textBox_Delete.Visible = true;
                     comboBox_Other.Visible = true;
                     comboBox_Group.Visible = true;
 
@@ -135,6 +144,11 @@ namespace TestServer
                     comboBox_Group.Items.AddRange(RGroups.GetAll().ToArray());
                     comboBox_Other.Items.AddRange(RUser.GetAll().ToArray());
                     break;
+                case "TestResult":
+                    dataGridView_Table.DataSource = RTestResult.GetAll().ToList();
+                    dataGridView_Table.Columns["Id"].Visible = false;
+                    this.Size = new Size(this.Size.Width, 190);
+                    break;
                 default:
                     break;
             }
@@ -142,7 +156,7 @@ namespace TestServer
 
         private void button_Create_Click(object sender, EventArgs e)
         {
-            if (listBox_Tables.SelectedIndex != -1)
+                if (listBox_Tables.SelectedIndex != -1)
                 switch (listBox_Tables.SelectedItem.ToString())
                 {
                     case "Group":
@@ -187,15 +201,27 @@ namespace TestServer
                 switch (listBox_Tables.SelectedItem.ToString())
                 {
                     case "Group":
-                        CU_Group createGroup = new CU_Group(this, FormType.Update, textBox_Delete.Text);
-                        createGroup.ShowDialog();
-                        if (createGroup.DialogResult == DialogResult.OK)
+                        CU_Group updateGroup = new CU_Group(this, FormType.Update, textBox_Delete.Text);
+                        updateGroup.ShowDialog();
+                        if (updateGroup.DialogResult == DialogResult.OK)
                             RefreshTable();
                         break;
                     case "User":
-                        CU_User createUser = new CU_User(this, FormType.Update, textBox_Delete.Text);
-                        createUser.ShowDialog();
-                        if (createUser.DialogResult == DialogResult.OK)
+                        CU_User updateUser = new CU_User(this, FormType.Update, textBox_Delete.Text);
+                        updateUser.ShowDialog();
+                        if (updateUser.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    case "UserGroup":
+                        CU_UserGroup updateUserGroup = new CU_UserGroup(this);
+                        updateUserGroup.ShowDialog();
+                        if (updateUserGroup.DialogResult == DialogResult.OK)
+                            RefreshTable();
+                        break;
+                    case "GroupTest":
+                        CU_GroupTest updateGroupTest = new CU_GroupTest(this);
+                        updateGroupTest.ShowDialog();
+                        if (updateGroupTest.DialogResult == DialogResult.OK)
                             RefreshTable();
                         break;
                     default:
@@ -235,6 +261,7 @@ namespace TestServer
         {
             if(listBox_Tables.SelectedIndex != -1)
             {
+                textBox_Delete.Text = "";
                 RefreshTable();
                 if (listBox_Tables.SelectedItem.ToString() == "Test")
                     button_Create.Text = "Import";
@@ -338,7 +365,11 @@ namespace TestServer
                     }
                     else continue;
                 }    
-            }          
+            }
+            int tmp = work.context.Database.SqlQuery<int>("select [dbo].[fn_CorrectAnswersPercetntage](@User, @Test)", 
+                new SqlParameter("User", RUser.FindById(test.UserID).Login),
+                new SqlParameter("Test", test.Title)).Single(); //нові функції не додаються
+            RTestResult.Add(new TestResult() { Test = RTests.FindById(test.Id), User = RUser.FindById(test.UserID), Result = tmp.ToString() + "%" });
         }
 
         private bool AuthorizationSucceeded(string login, string password)
@@ -371,6 +402,56 @@ namespace TestServer
             }
 
             return tws;
-        }      
+        }
+
+        private void pictureBox_Close_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void pictureBox_Close_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox_Close.Image = Resources.close_1;
+        }
+
+        private void pictureBox_Close_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox_Close.Image = Resources.close_0;
+        }
+
+        private void pictureBox_Minimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void pictureBox_Minimize_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox_Minimize.Image = Resources.minimize_1;
+        }
+
+        private void pictureBox_Minimize_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox_Minimize.Image = Resources.minimize_0;
+        }
+
+        private void MainPage_Load(object sender, EventArgs e)
+        {
+            pictureBox_Close.Image = Resources.close_0;
+            pictureBox_Minimize.Image = Resources.minimize_0;
+        }
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+        private void panel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
     }
 }

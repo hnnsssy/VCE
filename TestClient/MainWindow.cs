@@ -7,11 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TestClient.Properties;
 using TestWrappersLib;
 
 namespace TestClient
@@ -21,6 +23,9 @@ namespace TestClient
         Socket sendSocket = null;
         TestWrap currentTest;
         int currentQuestionIndex;
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
 
         //DateTime timeToComplete;
         public MainWindow()
@@ -91,6 +96,12 @@ namespace TestClient
                     {
                         listBox_Tests.Items.Clear();
                         listBox_Tests.Items.AddRange(te.ToArray());
+
+                        groupBox_Login.Visible = false;
+                        groupBox_Test.Location = groupBox_Login.Location;
+                        this.Size = new Size(565, 224);
+                        pictureBox_Minimize.Location = new Point(515, 0);
+                        pictureBox_Close.Location = new Point(540, 0);
                     }));
                 }
             }
@@ -123,6 +134,12 @@ namespace TestClient
                     MessageBox.Show(ex.Message, "Informer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+
+            Thread.Sleep(200);
+            if(listBox_Tests.Items.Count > 0)
+            {
+                
+            }
         }
 
         private void checkedListBox_Answers_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -142,6 +159,11 @@ namespace TestClient
                 sendByte = ms.ToArray();
             }
             sendSocket.Send(sendByte);
+
+            listBox_Tests.Items.RemoveAt(listBox_Tests.SelectedIndex);
+            checkedListBox_Answers.Items.Clear();
+            label_Question.Text = "";
+            label_Counter.Text = "0/0";
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -149,6 +171,56 @@ namespace TestClient
             //TimeSpan elapsed = DateTime.Now - timeToComplete;
 
             //label_Time.Text = elapsed.ToString("HH:mm:ss");
+        }
+
+        private void pictureBox_Close_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void pictureBox_Close_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox_Close.Image = Resources.close_1;
+        }
+
+        private void pictureBox_Close_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox_Close.Image = Resources.close_0;
+        }
+
+        private void pictureBox_Minimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void pictureBox_Minimize_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox_Minimize.Image = Resources.minimize_1;
+        }
+
+        private void pictureBox_Minimize_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox_Minimize.Image = Resources.minimize_0;
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            pictureBox_Close.Image = Resources.close_0;
+            pictureBox_Minimize.Image = Resources.minimize_0;
+        }
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+        private void panel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }

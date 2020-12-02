@@ -10,7 +10,7 @@ namespace Repository
 {
     public class EFGenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        DbContext _context;
+        public DbContext _context;
         DbSet<TEntity> _dbSet;
 
         public EFGenericRepository(DbContext context)
@@ -56,6 +56,11 @@ namespace Repository
         public IEnumerable<TEntity> ExecWithStoreProcedure(string query, params object[] parameters)
         {
             return _context.Database.SqlQuery<TEntity>(query, parameters);
+        }
+
+        public int ExecScalar(string query, params object[] parameters)
+        {
+            return _context.Database.SqlQuery<int>(query, parameters).FirstOrDefault();
         }
 
         private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)

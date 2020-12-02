@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Answer.cs" />
+    <Compile Include="TestResult.cs" />
     <Compile Include="GroupTest.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Question.cs" />
